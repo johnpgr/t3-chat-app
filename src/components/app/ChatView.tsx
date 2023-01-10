@@ -13,7 +13,10 @@ export function ChatView() {
             <Topbar />
             <Sidebar menuItems={roomsQuery.data}>
                 <div>
-                    Current view: {currentView?.id ?? "no current view active."}
+                    Current view:{" "}
+                    {"roomId" in currentView
+                        ? currentView.roomId
+                        : currentView.view}
                 </div>
             </Sidebar>
         </>

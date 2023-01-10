@@ -13,6 +13,7 @@
 - [x] User authentication
 - [x] User can create rooms with passwords
 - [x] User have a list of rooms they are in / owns
+- [ ] List all active rooms
 - [ ] User can join rooms
 - [ ] Live chat using websockets
 - [ ] User can delete rooms
