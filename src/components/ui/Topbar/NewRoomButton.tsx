@@ -31,7 +31,7 @@ export function NewRoomButton() {
             />
 
             <div className="modal">
-                <div className="modal-box relative">
+                <div className="modal-box relative ">
                     <button
                         onClick={handleToggleModal}
                         className="btn-sm btn-circle btn  absolute top-2 right-2"
@@ -66,7 +66,7 @@ export function NewRoomButton() {
                                 className="input-bordered input"
                             />
                         </div>
-                        <div className="form-control">
+                        <div className="form-control relative">
                             <label className="label">
                                 <span className="label-text">
                                     Max users (default:10)
@@ -80,9 +80,17 @@ export function NewRoomButton() {
                                 placeholder="Max users"
                                 className="input-bordered input"
                             />
+                            {form.formState.errors.maxUsers && (
+                                <p className="absolute -bottom-6 left-1 text-xs text-red-500">
+                                    {form.formState.errors.maxUsers.message}
+                                </p>
+                            )}
                         </div>
                         <div className="modal-action">
-                            <button type="submit" className="btn-primary btn">
+                            <button
+                                type="submit"
+                                className="btn-primary btn gap-2"
+                            >
                                 {isLoading && <Loading />} Create
                             </button>
                         </div>

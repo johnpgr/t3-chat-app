@@ -5,7 +5,8 @@ export const roomInput = z.object({
     password: z.string().max(32).optional(),
     maxUsers: z
         .number()
-        .max(16)
+        .max(16, "Max users allowed: 16")
+        .positive("At least 1 user is required")
         .or(z.nan().transform(() => 10)),
 });
 

@@ -1,8 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import { RoomInput } from "~/zod/inputs/rooms";
-
+import { RoomInput, roomInput } from "~/zod/inputs/rooms";
+import { zodResolver } from "@hookform/resolvers/zod";
 export function useCreateRoomForm(
     setChecked: Dispatch<SetStateAction<boolean>>
 ) {
@@ -15,7 +15,9 @@ export function useCreateRoomForm(
             },
         });
 
-    const form = useForm<RoomInput>();
+    const form = useForm<RoomInput>({
+        resolver: zodResolver(roomInput),
+    });
 
     async function onSubmit(data: RoomInput) {
         console.log({ newRoom: data });
