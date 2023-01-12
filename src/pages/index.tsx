@@ -4,7 +4,7 @@ import { Loading } from "~/components/ui/Loading";
 import { Login } from "~/components/ui/Login";
 
 export default function Home() {
-    const { data, status } = useSession();
+    const { status } = useSession();
 
     if (status === "loading")
         return (

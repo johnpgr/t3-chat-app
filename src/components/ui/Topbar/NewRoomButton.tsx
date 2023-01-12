@@ -32,7 +32,7 @@ export function NewRoomButton() {
             />
 
             <div className="modal">
-                <div className="modal-box relative ">
+                <div className="modal-box relative">
                     <button
                         onClick={handleToggleModal}
                         className="btn-sm btn-circle btn  absolute top-2 right-2"

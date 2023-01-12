@@ -64,7 +64,7 @@ export function ChatRoomView() {
                 <h1>Chat Room: {roomId}</h1>
                 <p>Status: {status}</p>
             </div>
-            <div className="p-4 h-full overflow-y-scroll">
+            <div className="p-4 h-full overflow-y-scroll scrollbar-thin scrollbar-track-rounded-md scrollbar-thumb-rounded-md scrollbar-track-base-100 scrollbar-thumb-neutral">
                 {isPersistedMessagesLoading && (
                     <div className="flex h-full justify-center items-center">
                         <Loading />

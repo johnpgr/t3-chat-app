@@ -4,21 +4,21 @@ module.exports = {
     theme: {
         extend: {},
     },
-    plugins: [require("daisyui")],
+    plugins: [require("daisyui"), require("tailwind-scrollbar")({ nocompatible: true })],
     daisyui: {
         themes: [
             {
                 mytheme: {
 
-                    "primary": "#3d79b5",
+                    "primary": "#547AA5",
 
-                    "secondary": "#0dafe5",
+                    "secondary": "#914D76",
 
-                    "accent": "#e50914",
+                    "accent": "#9dbf9b",
 
-                    "neutral": "#151828",
+                    "neutral": "#2d2e39",
 
-                    "base-100": "#372F42",
+                    "base-100": "#4F5165",
 
                     "info": "#507CE2",
 

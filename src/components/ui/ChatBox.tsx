@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 export function ChatBox({ messages }: { messages: Array<Message> }) {
     const { data: session } = useSession();
     return (
-        <ul>
+        <ul >
             {messages.map((message) => (
                 <div key={message.id} className={
                     classNames("chat", {
@@ -39,6 +39,6 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
                     </div>
                 </div>
             ))}
-        </ul >
+        </ul>
     )
 }

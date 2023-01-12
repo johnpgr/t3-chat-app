@@ -1,4 +1,4 @@
-import { RoomsTab } from "./Topbar/RoomsTab";
+import { RoomsTab } from "./RoomsTab";
 import { RouterOutputs } from "~/utils/api"
 import { TOPBAR_HEIGHT } from "./Topbar";
 import { Loading } from "./Loading";
@@ -20,7 +20,7 @@ export function Sidebar({ children, menuItems }
             <div className="drawer-content flex flex-col bg-base-300">
                 {children}
             </div>
-            <div className="drawer-side w-80">
+            <div className="drawer-side w-80 border-r border-neutral/50">
                 <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
                 <div className="h-full bg-base-100 flex flex-col items-center">
                     {menuItems && <RoomsTab menuItems={menuItems} />}
