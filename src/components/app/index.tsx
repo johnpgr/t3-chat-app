@@ -5,9 +5,8 @@ import { CurrentViewAtom } from "./atoms/CurrentView";
 import { Topbar } from "../ui/Topbar";
 import { ChatRoomView } from "./ChatRoomView";
 
-
 export function App() {
-    const roomsQuery = api.rooms.list.useQuery();
+    const roomsQuery = api.rooms.listOwned.useQuery();
     const [currentView] = useAtom(CurrentViewAtom);
 
     return (

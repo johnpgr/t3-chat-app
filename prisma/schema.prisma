@@ -15,12 +15,13 @@ datasource db {
 }
 
 model Room {
-    id       String     @id @default(cuid())
-    name     String
-    password String?
-    maxUsers Int        @default(10)
-    Message  Message[]
-    RoomUser RoomUser[]
+    id        String     @id @default(cuid())
+    name      String
+    password  String?
+    maxUsers  Int        @default(10)
+    Message   Message[]
+    RoomUser  RoomUser[]
+    createdAt DateTime   @default(now())
 }
 
 // a room can have many users, and a user can have many rooms, and a room can only have one owner

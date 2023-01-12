@@ -6,7 +6,12 @@ import { Login } from "~/components/ui/Login";
 export default function Home() {
     const { data, status } = useSession();
 
-    if (status === "loading") return <Loading />;
+    if (status === "loading")
+        return (
+            <div className="h-screen flex items-center justify-center">
+                <Loading />
+            </div>
+        );
     if (status === "unauthenticated") return <Login />;
 
     return <App />;

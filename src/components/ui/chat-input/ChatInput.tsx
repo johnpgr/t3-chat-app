@@ -6,6 +6,7 @@ export function ChatInput() {
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="p-2 flex gap-2">
             <input
+                placeholder="Enter your message here"
                 {...register("text")}
                 type="text"
                 className="input input-sm w-full max-w-none"

@@ -11,7 +11,7 @@ export function useCreateRoomForm(
         api.rooms.create.useMutation({
             onSuccess: () => {
                 setChecked(false);
-                rooms.list.invalidate();
+                rooms.listOwned.invalidate();
             },
         });
 
