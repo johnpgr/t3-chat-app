@@ -9,6 +9,7 @@ import { api, RouterOutputs } from "~/utils/api";
 import { ChatInput } from "../ui/chat-input/ChatInput";
 import { ChatBox } from "../ui/ChatBox";
 import { Loading } from "../ui/Loading";
+import { CurrentChannelAtom } from "./atoms/CurrentChannel";
 import { CurrentRoomAtom } from "./atoms/CurrentView";
 import { InTransitMessagesAtom } from "./atoms/InTransitMessages";
 
@@ -27,6 +28,7 @@ export function ChatRoomView() {
     const [inTransitMessages, setInTransitMessages] =
         useAtom(InTransitMessagesAtom);
     const [status, setStatus] = useState("");
+    const [, setCurrentChannel] = useAtom(CurrentChannelAtom);
 
     useEffect(() => {
         if (!roomId) return;
@@ -37,6 +39,9 @@ export function ChatRoomView() {
             REALTIME_LISTEN_TYPES.BROADCAST,
             { event: "MESSAGE" },
             (payload: MessagePayload) => {
+                if (typeof payload.payload?.createdAt === "string") {
+                    payload.payload.createdAt = new Date(payload.payload.createdAt);
+                }
                 setInTransitMessages((prev) => [...prev, payload.payload!])
             }).subscribe(
                 (status) => {
@@ -44,10 +49,12 @@ export function ChatRoomView() {
                 }
             )
 
+        setCurrentChannel(channel);
+
         return () => {
-            console.log("Unsubscribing from channel");
             channel && supabase.removeChannel(channel);
             setInTransitMessages([]);
+            setCurrentChannel(null);
         }
     }, [roomId]);
 

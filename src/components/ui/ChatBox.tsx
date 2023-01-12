@@ -6,11 +6,10 @@ import { useSession } from "next-auth/react";
 
 export function ChatBox({ messages }: { messages: Array<Message> }) {
     const { data: session } = useSession();
-
     return (
         <ul>
             {messages.map((message) => (
-                <div className={
+                <div key={message.id} className={
                     classNames("chat", {
                         "chat-end": message.user.id === session?.user?.id,
                         "chat-start": message.user.id !== session?.user?.id,
@@ -29,11 +28,9 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
                             {isToday(message.createdAt)
                                 ? (<>
                                     Today{" "}
-                                    {format(new Date(message.createdAt),
-                                        "HH:mm")}
+                                    {format(message.createdAt, "HH:mm")}
                                 </>)
-                                : format(new Date(message.createdAt),
-                                    "dd/MM/yyyy HH:mm")
+                                : format(message.createdAt, "dd/MM/yyyy HH:mm")
                             }
                         </time>
                     </div>
