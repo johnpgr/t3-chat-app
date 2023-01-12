@@ -28,6 +28,7 @@ export function NewRoomButton() {
                 id="my-modal"
                 className="modal-toggle"
                 checked={checked}
+                readOnly
             />
 
             <div className="modal">

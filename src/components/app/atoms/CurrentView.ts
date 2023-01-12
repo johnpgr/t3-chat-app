@@ -14,3 +14,5 @@ type CurrentView<V> = V extends View.ROOM_VIEW
 export const CurrentViewAtom = atom<CurrentView<View>>({
     view: View.INITIAL_VIEW,
 } satisfies CurrentView<View.INITIAL_VIEW>);
+
+export const CurrentRoomAtom = atom<string | null>(null);

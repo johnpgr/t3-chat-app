@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import { ChatView } from "~/components/app/ChatView";
+import { App } from "~/components/app";
 import { Loading } from "~/components/ui/Loading";
 import { Login } from "~/components/ui/Login";
 
@@ -9,5 +9,5 @@ export default function Home() {
     if (status === "loading") return <Loading />;
     if (status === "unauthenticated") return <Login />;
 
-    return <ChatView />;
+    return <App />;
 }

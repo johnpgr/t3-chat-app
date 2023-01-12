@@ -1,25 +1,26 @@
-import Link from "next/link";
-import { type Room } from "@prisma/client";
-import { Loading } from "./Loading";
 import { useAtom } from "jotai";
-import { CurrentViewAtom, View } from "../app/atoms/CurrentView";
+import { Loading } from "./Loading";
+import { CurrentViewAtom, CurrentRoomAtom, View } from "../app/atoms/CurrentView";
 import { RoomsTab } from "./Topbar/RoomsTab";
+import { RouterOutputs } from "~/utils/api"
+import { TOPBAR_HEIGHT } from "./Topbar";
 
-type MenuItem = Pick<Room, "id" | "name">;
+type MenuItem = RouterOutputs["rooms"]["list"][number]
 
-export const Sidebar: React.FC<{
-    children: React.ReactNode;
-    menuItems?: Array<MenuItem>;
-}> = ({ children, menuItems }) => {
+export function Sidebar({ children, menuItems }
+    : { children: React.ReactNode, menuItems?: Array<MenuItem> }) {
     const [, setCurrentView] = useAtom(CurrentViewAtom);
+    const [, setRoomId] = useAtom(CurrentRoomAtom)
 
     function handleChangeView(id: string) {
         setCurrentView({ view: View.ROOM_VIEW, roomId: id });
+        setRoomId(id);
     }
 
     return (
-        <div className="drawer-mobile drawer">
+        <div className="drawer-mobile drawer" style={{ height: `calc(100vh - ${TOPBAR_HEIGHT})` }}>
             <input
+                readOnly
                 checked
                 id="my-drawer-2"
                 type="checkbox"
