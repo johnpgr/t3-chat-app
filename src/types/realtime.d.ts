@@ -1,5 +1,5 @@
 export type Payload<T> = {
-  type: string
-  event: string
-  payload?: T
+    type: string
+    event: string
+    payload?: T
 }

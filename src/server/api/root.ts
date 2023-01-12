@@ -1,6 +1,6 @@
-import { createTRPCRouter } from "./trpc";
-import { roomsRouter } from "./routers/rooms";
-import { messagesRouter } from "./routers/messages";
+import {createTRPCRouter} from "./trpc";
+import {roomsRouter} from "./routers/rooms";
+import {messagesRouter} from "./routers/messages";
 
 /**
  * This is the primary router for your server.

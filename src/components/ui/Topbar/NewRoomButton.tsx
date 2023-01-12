@@ -1,15 +1,15 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import { BsPlusLg } from "react-icons/bs";
-import { IoClose } from "react-icons/io5";
-import { Loading } from "../Loading";
-import { useCreateRoomForm } from "./hooks/useCreateRoomForm";
+import {useState} from "react";
+import {createPortal} from "react-dom";
+import {BsPlusLg} from "react-icons/bs";
+import {IoClose} from "react-icons/io5";
+import {Loading} from "../Loading";
+import {useCreateRoomForm} from "./hooks/useCreateRoomForm";
 
 export function NewRoomButton() {
     const [checked, setChecked] = useState(false);
 
     //passing the setChecked function to the hook, to automatically close the modal after the room is created
-    const { form, onSubmit, isLoading } = useCreateRoomForm(setChecked);
+    const {form, onSubmit, isLoading} = useCreateRoomForm(setChecked);
 
     function handleToggleModal() {
         setChecked(!checked);
@@ -22,7 +22,7 @@ export function NewRoomButton() {
                 htmlFor="create-room-modal"
                 className="btn-ghost btn-circle btn text-2xl text-white transition-all "
             >
-                <BsPlusLg />
+                <BsPlusLg/>
             </label>
             {createPortal(
                 <>
@@ -39,7 +39,7 @@ export function NewRoomButton() {
                                 onClick={handleToggleModal}
                                 className="btn-sm btn-circle btn absolute top-2 right-2"
                             >
-                                <IoClose className="text-lg" />
+                                <IoClose className="text-lg"/>
                             </button>
                             <form
                                 className="form-control gap-2"
@@ -50,7 +50,7 @@ export function NewRoomButton() {
                                         <span className="label-text">Name</span>
                                     </label>
                                     <input
-                                        {...form.register("name", { required: true })}
+                                        {...form.register("name", {required: true})}
                                         type="text"
                                         placeholder="Name"
                                         className="input-bordered input"
@@ -94,7 +94,7 @@ export function NewRoomButton() {
                                         type="submit"
                                         className="btn-primary btn gap-2"
                                     >
-                                        {isLoading && <Loading />} Create
+                                        {isLoading && <Loading/>} Create
                                     </button>
                                 </div>
                             </form>

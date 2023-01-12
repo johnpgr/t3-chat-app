@@ -1,20 +1,20 @@
-import { CurrentRoomAtom } from "~/components/app/atoms/CurrentView";
-import { Message } from "~/components/app/ChatRoomView";
-import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
-import { useAtom } from "jotai";
-import { InTransitMessagesAtom } from "~/components/app/atoms/InTransitMessages";
-import { useSession } from "next-auth/react";
+import {CurrentRoomAtom} from "~/components/app/atoms/CurrentView";
+import {Message} from "~/components/app/ChatRoomView";
+import {useForm} from "react-hook-form";
+import {api} from "~/utils/api";
+import {useAtom} from "jotai";
+import {InTransitMessagesAtom} from "~/components/app/atoms/InTransitMessages";
+import {useSession} from "next-auth/react";
 import cuid from "cuid";
-import { CurrentChannelAtom } from "~/components/app/atoms/CurrentChannel";
-import { REALTIME_LISTEN_TYPES } from "@supabase/supabase-js";
+import {CurrentChannelAtom} from "~/components/app/atoms/CurrentChannel";
+import {REALTIME_LISTEN_TYPES} from "@supabase/supabase-js";
 
 export function useChatInput() {
-    const { register, handleSubmit, reset } = useForm<{ text: string }>()
-    const { mutate: persistMessage } = api.messages.create.useMutation();
+    const {register, handleSubmit, reset} = useForm<{ text: string }>()
+    const {mutate: persistMessage} = api.messages.create.useMutation();
     const [roomId] = useAtom(CurrentRoomAtom);
     const [, setInTransitMessages] = useAtom(InTransitMessagesAtom)
-    const { data: currUserData } = useSession()
+    const {data: currUserData} = useSession()
     const [currentChannel] = useAtom(CurrentChannelAtom);
 
     function onSubmit(data: { text: string }) {
@@ -37,17 +37,17 @@ export function useChatInput() {
             createdAt: new Date()
         } satisfies Message;
 
-        currentChannel.send({
+        void currentChannel.send({
             type: REALTIME_LISTEN_TYPES.BROADCAST,
             event: "MESSAGE",
             payload: message,
         });
 
         setInTransitMessages((messages) => [...messages, message])
-        persistMessage({ text: data.text, roomId })
+        persistMessage({text: data.text, roomId})
 
         reset();
     }
 
-    return { register, handleSubmit, onSubmit }
+    return {register, handleSubmit, onSubmit}
 }

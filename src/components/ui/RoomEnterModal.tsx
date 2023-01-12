@@ -1,11 +1,11 @@
-import { useAtom } from "jotai";
-import { SetStateAction, useState } from "react";
-import { createPortal, findDOMNode } from "react-dom";
-import { useForm } from "react-hook-form";
-import { IoClose } from "react-icons/io5";
-import { api, RouterOutputs } from "~/utils/api"
-import { CurrentRoomAtom, CurrentViewAtom, View } from "../app/atoms/CurrentView";
-import { Loading } from "./Loading";
+import {useAtom} from "jotai";
+import { type SetStateAction, useState} from "react";
+import {createPortal} from "react-dom";
+import {useForm} from "react-hook-form";
+import {IoClose} from "react-icons/io5";
+import {api, type RouterOutputs} from "~/utils/api"
+import {CurrentRoomAtom, CurrentViewAtom, View} from "../app/atoms/CurrentView";
+import {Loading} from "./Loading";
 
 type Props = {
     room: RouterOutputs["rooms"]["listAll"][number];
@@ -18,11 +18,16 @@ type RoomEnterData = {
     password: string;
 }
 
-export function RoomEnterModal({ room, children, modalOpen, setModalOpen }: Props) {
+export function RoomEnterModal({
+                                   room,
+                                   children,
+                                   modalOpen,
+                                   setModalOpen
+                               }: Props) {
     const [, setRoomId] = useAtom(CurrentRoomAtom);
     const [, setCurrentView] = useAtom(CurrentViewAtom);
-    const { mutateAsync: enterRoom, isLoading } = api.rooms.enter.useMutation();
-    const { register, handleSubmit, reset } = useForm<RoomEnterData>()
+    const {mutateAsync: enterRoom, isLoading} = api.rooms.enter.useMutation();
+    const {register, handleSubmit, reset} = useForm<RoomEnterData>()
     const [error, setError] = useState("")
 
     function handleToggleModal() {
@@ -31,15 +36,18 @@ export function RoomEnterModal({ room, children, modalOpen, setModalOpen }: Prop
 
     async function onSubmit(data: RoomEnterData) {
         setError("")
-        const { password } = data;
-        const roomEntered = Boolean(await enterRoom({ roomId: room.id, password }));
+        const {password} = data;
+        const roomEntered = Boolean(await enterRoom({
+            roomId: room.id,
+            password
+        }));
 
         if (!roomEntered) {
             setError("Wrong password!")
             return;
-        };
+        }
 
-        setCurrentView({ view: View.ROOM_VIEW, roomId: room.id });
+        setCurrentView({view: View.ROOM_VIEW, roomId: room.id});
         setRoomId(room.id);
         setModalOpen(false)
         reset();
@@ -70,7 +78,7 @@ export function RoomEnterModal({ room, children, modalOpen, setModalOpen }: Prop
                                 onClick={handleToggleModal}
                                 className="btn-sm btn-circle btn absolute top-2 right-2"
                             >
-                                <IoClose className="text-lg" />
+                                <IoClose className="text-lg"/>
                             </button>
                             <form
                                 className="form-control gap-2"
@@ -79,16 +87,18 @@ export function RoomEnterModal({ room, children, modalOpen, setModalOpen }: Prop
                                 <h3 className="text-center font-bold">{room.name}</h3>
                                 <div className="form-control relative">
                                     <label className="label">
-                                        <span className="label-text">Password</span>
+                                        <span
+                                            className="label-text">Password</span>
                                     </label>
                                     <input
-                                        {...register("password", { required: true })}
+                                        {...register("password", {required: true})}
                                         type="password"
                                         placeholder="Password"
                                         className="input-bordered input"
                                     />
                                     {error.length > 0 &&
-                                        <span className="text-red-500 text-xs absolute -bottom-6 left-1">
+                                        <span
+                                            className="text-red-500 text-xs absolute -bottom-6 left-1">
                                             {error}
                                         </span>
                                     }
@@ -98,7 +108,7 @@ export function RoomEnterModal({ room, children, modalOpen, setModalOpen }: Prop
                                         type="submit"
                                         className="btn-primary btn gap-2"
                                     >
-                                        {isLoading && <Loading />} Enter
+                                        {isLoading && <Loading/>} Enter
                                     </button>
                                 </div>
                             </form>

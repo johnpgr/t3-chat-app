@@ -1,6 +1,6 @@
 # Real-time chat application
 
-## Created using 
+## Created using
 
 - [Next.js](https://nextjs.org/)
 - [Supabase](https://supabase.com)
@@ -18,9 +18,11 @@
 - [x] List all active rooms
 - [ ] User can join rooms
 - [x] Live chat using websockets
-- [x] Live messages are both broadcasted & instantly displayed and persisted on db
-- [ ] User can have multiple chat rooms open 
-- [ ] User can receive notifications about messages in rooms that are open, but not in view
+- [x] Live messages are both broadcasted & instantly displayed and persisted on
+  db
+- [ ] User can have multiple chat rooms open
+- [ ] User can receive notifications about messages in rooms that are open, but
+  not in view
 - [ ] User can delete rooms
 - [ ] Owner of room can edit room
 - [ ] Owner of room can delete messages / kick other users

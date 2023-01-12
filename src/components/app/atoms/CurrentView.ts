@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import {atom} from "jotai";
 
 export enum View {
     INITIAL_VIEW = "INITIAL_VIEW",

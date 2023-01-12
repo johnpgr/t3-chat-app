@@ -1,10 +1,9 @@
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { roomInput } from "~/zod/inputs/rooms";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
+import {createTRPCRouter, protectedProcedure} from "../trpc";
+import {roomInput} from "~/zod/inputs/rooms";
+import {z} from "zod";
 
 export const roomsRouter = createTRPCRouter({
-    listAll: protectedProcedure.query(async ({ ctx }) => {
+    listAll: protectedProcedure.query(async ({ctx}) => {
         const rooms = await ctx.prisma.room.findMany({
             select: {
                 id: true,
@@ -26,12 +25,12 @@ export const roomsRouter = createTRPCRouter({
 
         return rooms.map((room) =>
             room.password
-                ? { ...room, password: true }
-                : { ...room, password: false }
+                ? {...room, password: true}
+                : {...room, password: false}
         )
     }),
 
-    listOwned: protectedProcedure.query(async ({ ctx }) => {
+    listOwned: protectedProcedure.query(async ({ctx}) => {
         const userId = ctx.session.user.id;
 
         return await ctx.prisma.room.findMany({
@@ -58,7 +57,10 @@ export const roomsRouter = createTRPCRouter({
         });
     }),
 
-    create: protectedProcedure.input(roomInput).mutation(async ({ ctx, input }) => {
+    create: protectedProcedure.input(roomInput).mutation(async ({
+                                                                    ctx,
+                                                                    input
+                                                                }) => {
         const userId = ctx.session.user.id;
 
         return await ctx.prisma.room.create({
@@ -79,9 +81,9 @@ export const roomsRouter = createTRPCRouter({
     enter: protectedProcedure.input(z.object({
         roomId: z.string(),
         password: z.string().optional(),
-    })).mutation(async ({ ctx, input }) => {
-        const { id: userId } = ctx.session.user;
-        const { roomId, password } = input;
+    })).mutation(async ({ctx, input}) => {
+        const {id: userId} = ctx.session.user;
+        const {roomId, password} = input;
 
         const room = await ctx.prisma.room.findUnique({
             where: {

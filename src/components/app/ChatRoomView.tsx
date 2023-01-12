@@ -1,17 +1,15 @@
-import {
-    REALTIME_LISTEN_TYPES
-} from "@supabase/supabase-js";
-import { useAtom } from "jotai";
-import { useEffect, useState } from "react";
-import { supabase } from "~/services/supabase";
-import { Payload } from "~/types/realtime";
-import { api, RouterOutputs } from "~/utils/api";
-import { ChatInput } from "../ui/chat-input/ChatInput";
-import { ChatBox } from "../ui/ChatBox";
-import { Loading } from "../ui/Loading";
-import { CurrentChannelAtom } from "./atoms/CurrentChannel";
-import { CurrentRoomAtom } from "./atoms/CurrentView";
-import { InTransitMessagesAtom } from "./atoms/InTransitMessages";
+import {REALTIME_LISTEN_TYPES} from "@supabase/supabase-js";
+import {useAtom} from "jotai";
+import {useEffect, useState} from "react";
+import {supabase} from "~/services/supabase";
+import type {Payload} from "~/types/realtime";
+import {api, type RouterOutputs} from "~/utils/api";
+import {ChatInput} from "../ui/chat-input/ChatInput";
+import {ChatBox} from "../ui/ChatBox";
+import {Loading} from "../ui/Loading";
+import {CurrentChannelAtom} from "./atoms/CurrentChannel";
+import {CurrentRoomAtom} from "./atoms/CurrentView";
+import {InTransitMessagesAtom} from "./atoms/InTransitMessages";
 
 export type Message = RouterOutputs["messages"]["list"][number]
 
@@ -19,8 +17,8 @@ type MessagePayload = Payload<Message>;
 
 export function ChatRoomView() {
     const [roomId] = useAtom(CurrentRoomAtom)
-    const { data: persistedMessages, isLoading: isPersistedMessagesLoading } =
-        api.messages.list.useQuery({ roomId: roomId! },
+    const {data: persistedMessages, isLoading: isPersistedMessagesLoading} =
+        api.messages.list.useQuery({roomId: roomId!},
             {
                 enabled: Boolean(roomId),
                 refetchOnWindowFocus: false,
@@ -37,17 +35,17 @@ export function ChatRoomView() {
 
         channel.on(
             REALTIME_LISTEN_TYPES.BROADCAST,
-            { event: "MESSAGE" },
+            {event: "MESSAGE"},
             (payload: MessagePayload) => {
                 if (typeof payload.payload?.createdAt === "string") {
                     payload.payload.createdAt = new Date(payload.payload.createdAt);
                 }
                 setInTransitMessages((prev) => [...prev, payload.payload!])
             }).subscribe(
-                (status) => {
-                    setStatus(status);
-                }
-            )
+            (status) => {
+                setStatus(status);
+            }
+        )
 
         setCurrentChannel(channel);
 
@@ -64,16 +62,17 @@ export function ChatRoomView() {
                 <h1>Chat Room: {roomId}</h1>
                 <p>Status: {status}</p>
             </div>
-            <div className="p-4 h-full overflow-y-scroll scrollbar-thin scrollbar-track-rounded-md scrollbar-thumb-rounded-md scrollbar-track-base-100 scrollbar-thumb-neutral">
+            <div
+                className="p-4 h-full overflow-y-scroll scrollbar-thin scrollbar-track-rounded-md scrollbar-thumb-rounded-md scrollbar-track-base-100 scrollbar-thumb-neutral">
                 {isPersistedMessagesLoading && (
                     <div className="flex h-full justify-center items-center">
-                        <Loading />
+                        <Loading/>
                     </div>
                 )}
-                {persistedMessages && <ChatBox messages={persistedMessages} />}
-                {inTransitMessages && <ChatBox messages={inTransitMessages} />}
+                {persistedMessages && <ChatBox messages={persistedMessages}/>}
+                {inTransitMessages && <ChatBox messages={inTransitMessages}/>}
             </div>
-            <ChatInput />
+            <ChatInput/>
         </div>
     );
 }

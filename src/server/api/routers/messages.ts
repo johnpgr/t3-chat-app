@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {z} from "zod";
+import {createTRPCRouter, protectedProcedure} from "../trpc";
 
 export const messagesRouter = createTRPCRouter({
 
     list: protectedProcedure.input(z.object({
         roomId: z.string()
-    })).query(async ({ ctx, input }) => {
-        const { roomId } = input;
+    })).query(async ({ctx, input}) => {
+        const {roomId} = input;
         return await ctx.prisma.message.findMany({
             select: {
                 id: true,
@@ -29,9 +29,9 @@ export const messagesRouter = createTRPCRouter({
     create: protectedProcedure.input(z.object({
         text: z.string(),
         roomId: z.string(),
-    })).mutation(async ({ ctx, input }) => {
-        const { text, roomId } = input;
-        const { id: userId } = ctx.session.user;
+    })).mutation(async ({ctx, input}) => {
+        const {text, roomId} = input;
+        const {id: userId} = ctx.session.user;
 
         return await ctx.prisma.message.create({
             data: {
