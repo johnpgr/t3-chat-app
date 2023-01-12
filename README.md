@@ -18,6 +18,9 @@
 - [x] List all active rooms
 - [ ] User can join rooms
 - [x] Live chat using websockets
+- [x] Live messages are both broadcasted & instantly displayed and persisted on db
+- [ ] User can have multiple chat rooms open 
+- [ ] User real-time receive notifications on messages in rooms that are open, but not in view
 - [ ] User can delete rooms
 - [ ] Owner of room can edit room
 - [ ] Owner of room can delete messages / kick other users
