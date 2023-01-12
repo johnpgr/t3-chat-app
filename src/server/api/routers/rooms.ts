@@ -11,20 +11,24 @@ export const roomsRouter = createTRPCRouter({
                 name: true,
                 maxUsers: true,
                 password: true,
-                _count: {
+                RoomUser: {
                     select: {
-                        RoomUser: true
+                        userId: true,
+                        owner: true
                     }
                 }
             },
             orderBy: {
                 createdAt: "desc"
-            }
+            },
         });
 
-        return rooms.map((room) => room.password
-            ? { ...room, password: true }
-            : { ...room, password: false });
+
+        return rooms.map((room) =>
+            room.password
+                ? { ...room, password: true }
+                : { ...room, password: false }
+        )
     }),
 
     listOwned: protectedProcedure.query(async ({ ctx }) => {

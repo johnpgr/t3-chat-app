@@ -1,7 +1,8 @@
 import classNames from "classnames";
 import { useAtom } from "jotai";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { FaUser } from "react-icons/fa";
+import { FaLock, FaUser } from "react-icons/fa";
 import {
     CurrentRoomAtom,
     CurrentSidebarViewAtom,
@@ -18,12 +19,15 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
     const [modalOpen, setModalOpen] = useState(false);
     const [currentTab, setCurrentTab] = useAtom(CurrentSidebarViewAtom);
     const [, setCurrentView] = useAtom(CurrentViewAtom)
+    const [,setCurrentRoom] = useAtom(CurrentRoomAtom)
     const { data: allRooms, isLoading } = api.rooms.listAll.useQuery(undefined, {
         enabled: currentTab.view === SidebarView.ALL_ROOMS
     });
+    const { data: session } = useSession()
 
     function handleEnterOwnRoom(roomId: string) {
         setCurrentView({ view: View.ROOM_VIEW, roomId });
+        setCurrentRoom(roomId)
     }
 
     function handleChangeTab(view: SidebarView) {
@@ -52,12 +56,12 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
             </div>
             <ul className="menu w-full p-4">
                 {currentTab.view === SidebarView.MY_ROOMS &&
-                    menuItems.map((item) => (
-                        <li key={item.id}>
-                            <button onClick={() => handleEnterOwnRoom(item.id)}>
-                                {item.name}
+                    menuItems.map((room) => (
+                        <li key={room.id}>
+                            <button onClick={() => handleEnterOwnRoom(room.id)}>
+                                {room.name}
                                 <div className="flex items-center gap-1 text-xs opacity-50 ml-auto">
-                                    {item._count.RoomUser} / {item.maxUsers}
+                                    {room._count.RoomUser} / {room.maxUsers}
                                     <FaUser className="h-3" />
                                 </div>
                             </button>
@@ -70,22 +74,35 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
                                 <Loading />
                             </div>}
                         {allRooms && allRooms.map((room) => (
-                            <RoomEnterModal
-                                room={room}
-                                key={room.id}
-                                modalOpen={modalOpen}
-                                setModalOpen={setModalOpen}
-                            >
-                                <li key={room.id}>
-                                    <button onClick={() => setModalOpen(!modalOpen)}>
+                            room.RoomUser.some((user) =>
+                                user.userId === session?.user?.id
+                                && user.owner)
+                                ? <li key={room.id}>
+                                    <button onClick={() => handleEnterOwnRoom(room.id)}>
                                         {room.name}
                                         <div className="flex items-center gap-1 text-xs opacity-50 ml-auto">
-                                            {room._count.RoomUser} / {room.maxUsers}
+                                            {room.RoomUser.length} / {room.maxUsers}
                                             <FaUser className="h-3" />
                                         </div>
                                     </button>
                                 </li>
-                            </RoomEnterModal>
+                                : <RoomEnterModal
+                                    room={room}
+                                    key={room.id}
+                                    modalOpen={modalOpen}
+                                    setModalOpen={setModalOpen}
+                                >
+                                    <li key={room.id}>
+                                        <button onClick={() => setModalOpen(!modalOpen)}>
+                                            {room.password && <FaLock className="h-3" />}
+                                            {room.name}
+                                            <div className="flex items-center gap-1 text-xs opacity-50 ml-auto">
+                                                {room.RoomUser.length} / {room.maxUsers}
+                                                <FaUser className="h-3" />
+                                            </div>
+                                        </button>
+                                    </li>
+                                </RoomEnterModal>
                         ))}
                     </>
                 }
