@@ -3,10 +3,12 @@
 ## Created using 
 
 - [Next.js](https://nextjs.org/)
-- [TailwindCSS](https://tailwindcss.com/)
+- [Supabase](https://supabase.com)
 - [Prisma](https://www.prisma.io/)
 - [tRPC](https://trpc.io)
 - [NextAuth](https://next-auth.js.org)
+- [TailwindCSS](https://tailwindcss.com/)
+- [DaisyUI](https://daisyui.com)
 
 ## Goals
 

@@ -1,13 +1,21 @@
 import { Message } from "~/components/app/ChatRoomView"
 import Image from "next/image"
 import { format, isToday } from "date-fns"
+import classNames from "classnames"
+import { useSession } from "next-auth/react";
 
 export function ChatBox({ messages }: { messages: Array<Message> }) {
+    const { data: session } = useSession();
 
     return (
         <ul>
             {messages.map((message) => (
-                <li className="chat chat-start" key={message.id}>
+                <div className={
+                    classNames("chat", {
+                        "chat-end": message.user.id === session?.user?.id,
+                        "chat-start": message.user.id !== session?.user?.id,
+                    }
+                    )}>
                     <Image
                         src={message.user.image!}
                         alt={message.user.name!}
@@ -15,7 +23,6 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
                         height={100}
                         className="rounded-full chat-image avatar w-10"
                     />
-
                     <div className="chat-header">
                         {message.user.name}{" "}
                         <time className="text-xs opacity-50">
@@ -33,9 +40,8 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
                     <div className="chat-bubble">
                         {message.text}
                     </div>
-
-                </li>
+                </div>
             ))}
-        </ul>
+        </ul >
     )
 }
