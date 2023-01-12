@@ -4,7 +4,7 @@ export function ChatInput() {
     const { register, handleSubmit, onSubmit } = useChatInput();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-auto p-2 flex gap-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-2 flex gap-2">
             <input
                 {...register("text")}
                 type="text"

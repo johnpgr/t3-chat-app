@@ -5,21 +5,14 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { supabase } from "~/services/supabase";
 import { Payload } from "~/types/realtime";
-import { api } from "~/utils/api";
+import { api, RouterOutputs } from "~/utils/api";
 import { ChatInput } from "../ui/chat-input/ChatInput";
+import { ChatBox } from "../ui/ChatBox";
 import { Loading } from "../ui/Loading";
 import { CurrentRoomAtom } from "./atoms/CurrentView";
 import { InTransitMessagesAtom } from "./atoms/InTransitMessages";
 
-export type Message = {
-    text: string
-    user: {
-        id: string,
-        name: string,
-        imageUrl: string
-    }
-    createdAt: Date
-}
+export type Message = RouterOutputs["messages"]["list"][number]
 
 type MessagePayload = Payload<Message>;
 
@@ -59,36 +52,19 @@ export function ChatRoomView() {
     }, [roomId]);
 
     return (
-        <div className="flex h-full flex-col w-full">
+        <div className="flex h-[96%] flex-col w-full">
             <div className="flex flex-col w-full items-center justify-center">
                 <h1>Chat Room: {roomId}</h1>
                 <p>Status: {status}</p>
             </div>
-            <div className="p-4">
-                <ul>
-                    {isPersistedMessagesLoading &&
-                        <div className="flex h-full w-full justify-center items-center">
-                            <Loading />
-                        </div>
-                    }
-                    {persistedMessages?.map((message, index) => (
-                        <li key={index}>
-                            {message.createdAt.toLocaleString()}
-                            {message.user.name}:
-                            {message.text}
-                        </li>
-                    ))}
-                </ul>
-                <ul>
-                    {inTransitMessages.map((message, index) => (
-                        <li key={index}>
-                            {message.createdAt.toLocaleString()}
-                            {message.user.name}:
-                            {message.text}
-                        </li>
-                    ))}
-                </ul>
-
+            <div className="p-4 h-full overflow-y-scroll">
+                {isPersistedMessagesLoading && (
+                    <div className="flex h-full justify-center items-center">
+                        <Loading />
+                    </div>
+                )}
+                {persistedMessages && <ChatBox messages={persistedMessages} />}
+                {inTransitMessages && <ChatBox messages={inTransitMessages} />}
             </div>
             <ChatInput />
         </div>

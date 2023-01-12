@@ -9,6 +9,7 @@ export const messagesRouter = createTRPCRouter({
         const { roomId } = input;
         return await ctx.prisma.message.findMany({
             select: {
+                id: true,
                 text: true,
                 user: {
                     select: {

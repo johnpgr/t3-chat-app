@@ -18,7 +18,8 @@ export function Sidebar({ children, menuItems }
     }
 
     return (
-        <div className="drawer-mobile drawer" style={{ height: `calc(100vh - ${TOPBAR_HEIGHT})` }}>
+        <div className="drawer-mobile drawer"
+            style={{ height: `calc(100vh - ${TOPBAR_HEIGHT})` }}>
             <input
                 readOnly
                 checked

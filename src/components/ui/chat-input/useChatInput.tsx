@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { useAtom } from "jotai";
 import { InTransitMessagesAtom } from "~/components/app/atoms/InTransitMessages";
 import { useSession } from "next-auth/react";
+import cuid from "cuid";
 
 export function useChatInput() {
     const { register, handleSubmit, reset } = useForm<{ text: string }>()
@@ -21,11 +22,12 @@ export function useChatInput() {
         ) return;
 
         const message = {
+            id: cuid(),
             text: data.text,
             user: {
                 id: currUserData.user?.id,
                 name: currUserData.user.name,
-                imageUrl: currUserData.user.image
+                image: currUserData.user.image
             },
             createdAt: new Date()
         } satisfies Message;
