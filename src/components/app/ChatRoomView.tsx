@@ -29,7 +29,7 @@ export function ChatRoomView() {
         api.messages.list.useQuery({ roomId: roomId! },
             {
                 enabled: Boolean(roomId),
-                staleTime: Infinity
+                refetchOnWindowFocus: false,
             })
     const [inTransitMessages, setInTransitMessages] =
         useAtom(InTransitMessagesAtom);
@@ -52,9 +52,11 @@ export function ChatRoomView() {
             )
 
         return () => {
+            console.log("Unsubscribing from channel");
             channel && supabase.removeChannel(channel);
+            setInTransitMessages([]);
         }
-    }, []);
+    }, [roomId]);
 
     return (
         <div className="flex h-full flex-col w-full">
