@@ -1,58 +1,51 @@
-import { REALTIME_LISTEN_TYPES } from "@supabase/supabase-js";
-import { useAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "~/utils/supabase";
-import type { Payload } from "~/types/realtime";
-import { api, type RouterOutputs } from "~/utils/api";
-import { ChatInput } from "../chat-input/ChatInput";
-import { ChatBox } from "./ChatBox";
-import { CurrentChannelAtom } from "~/atoms/CurrentChannel";
-import { CurrentRoomAtom } from "~/atoms/CurrentRoom";
-import { InTransitMessagesAtom } from "~/atoms/InTransitMessages";
-import { useIsIntersecting } from "~/utils/hooks/useIsIntersecting";
+import {REALTIME_LISTEN_TYPES} from "@supabase/supabase-js";
+import {useAtom} from "jotai";
+import {useEffect, useRef, useState} from "react";
+import {supabase} from "~/utils/supabase";
+import type {Payload} from "~/types/realtime";
+import {api, type RouterOutputs} from "~/utils/api";
+import {ChatInput} from "../chat-input/ChatInput";
+import {ChatBox} from "./ChatBox";
+import {CurrentChannelAtom} from "~/atoms/CurrentChannel";
+import {CurrentRoomAtom} from "~/atoms/CurrentRoom";
+import {InTransitMessagesAtom} from "~/atoms/InTransitMessages";
+import {useIsIntersecting} from "~/utils/hooks/useIsIntersecting";
 import classNames from "classnames";
-import { useSession } from "next-auth/react";
+import {useSession} from "next-auth/react";
+import {NewMessageToast} from "~/components/ui/NewMessageToast";
 
 // export type Message = RouterOutputs["messages"]["list"]["messages"][number];
 export type Message =
     RouterOutputs["messages"]["listInfinite"]["messages"][number];
 
-type MessagePayload = Payload<Message>;
+export type MessagePayload = Payload<Message & { read: boolean }>;
 
 export function ChatRoomView() {
     const [roomId] = useAtom(CurrentRoomAtom);
     const [isLoadMoreVisible, ref] = useIsIntersecting<HTMLDivElement>();
-    const [currentMsgLimit, setCurrentMsgLimit] = useState(20);
-    const {
-        data,
-        isFetching,
-        isInitialLoading,
-        isSuccess,
-        hasNextPage,
-        fetchNextPage,
-    } = api.messages.listInfinite.useInfiniteQuery(
-        { roomId: roomId! },
-        {
-            getNextPageParam: (lastPage) => lastPage.nextCursor,
-            enabled: Boolean(roomId),
-            refetchOnWindowFocus: false,
-            refetchOnMount: false,
-            staleTime: Infinity,
-        }
-    );
+    const {data, isFetching, isInitialLoading, hasNextPage, fetchNextPage} =
+        api.messages.listInfinite.useInfiniteQuery(
+            {roomId: roomId!},
+            {
+                getNextPageParam: (lastPage) => lastPage.nextCursor,
+                enabled: Boolean(roomId),
+                refetchOnWindowFocus: false,
+                refetchOnMount: false,
+                staleTime: Infinity,
+            }
+        );
     const fetchNextPageRef = useRef(fetchNextPage);
     fetchNextPageRef.current = fetchNextPage;
-
     const [inTransitMessages, setInTransitMessages] = useAtom(
         InTransitMessagesAtom
     );
     const [status, setStatus] = useState("");
     const [, setCurrentChannel] = useAtom(CurrentChannelAtom);
     const chatBoxRef = useRef<HTMLDivElement>(null);
-    const [chatBoxScrollHeigth, setChatBoxScrollHeigth] = useState(
+    const [chatBoxScrollHeight, setChatBoxScrollHeight] = useState(
         chatBoxRef?.current?.scrollHeight ?? 0
     );
-    const { data: session } = useSession();
+    const {data: session} = useSession();
     const [isLastMessageVisible, lastMsgRef] =
         useIsIntersecting<HTMLDivElement>();
     const [newMessagesAlert, setNewMessagesAlert] = useState(false);
@@ -66,7 +59,7 @@ export function ChatRoomView() {
         channel
             .on(
                 REALTIME_LISTEN_TYPES.BROADCAST,
-                { event: "MESSAGE" },
+                {event: "MESSAGE"},
                 (payload: MessagePayload) => {
                     if (typeof payload.payload?.createdAt === "string") {
                         payload.payload.createdAt = new Date(
@@ -85,8 +78,10 @@ export function ChatRoomView() {
         return () => {
             channel && supabase.removeChannel(channel);
             setInTransitMessages([]);
+            setChatBoxScrollHeight(0);
             setCurrentChannel(null);
         };
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomId]);
 
     // initial messagebox scroll
@@ -101,19 +96,18 @@ export function ChatRoomView() {
     useEffect(() => {
         if (isInitialLoading) return;
 
-        const currScrollHeigth = chatBoxRef?.current?.scrollHeight;
+        const currScrollHeight = chatBoxRef?.current?.scrollHeight;
 
-        if (!currScrollHeigth) return;
+        if (!currScrollHeight) return;
 
-        setChatBoxScrollHeigth((prev) => {
-            // console.log("curr-prev:",currScrollHeigth - prev)
+        setChatBoxScrollHeight((prev) => {
             chatBoxRef?.current?.scrollTo({
-                top: currScrollHeigth - prev,
+                top: currScrollHeight - prev,
                 behavior: "smooth",
             });
-            return currScrollHeigth;
+            return currScrollHeight;
         });
-    }, [isFetching]);
+    }, [isFetching, isInitialLoading]);
 
     //fetch next page
     useEffect(() => {
@@ -130,7 +124,24 @@ export function ChatRoomView() {
                 behavior: "smooth",
             });
         }
-    }, [inTransitMessages]);
+    }, [inTransitMessages, session?.user?.id]);
+
+    //new messages alert
+    useEffect(() => {
+        const lastMessageInTransit = inTransitMessages.at(-1);
+
+        console.log(lastMessageInTransit)
+        if (!lastMessageInTransit) return;
+
+
+        if (!isLastMessageVisible && !lastMessageInTransit.read) {
+            setNewMessagesAlert(true);
+            return;
+        }
+
+        lastMessageInTransit.read = true;
+        setNewMessagesAlert(false);
+    }, [inTransitMessages, isLastMessageVisible, session?.user?.id]);
 
     return (
         <div className="flex h-full flex-col">
@@ -153,18 +164,18 @@ export function ChatRoomView() {
                             .reverse()}
                     />
                 )}
-                {inTransitMessages && <ChatBox messages={inTransitMessages} />}
-                <div ref={lastMsgRef} />
+                {inTransitMessages && <ChatBox messages={inTransitMessages}/>}
+                <div ref={lastMsgRef}/>
             </div>
-            {/*{data?.pages.length} pages loaded | hasNextPage:{" "}*/}
-            {/*{hasNextPage?.toString()} | isInitialLoading:{" "}*/}
-            {/*{isInitialLoading.toString()} | isSuccess: {isSuccess.toString()} |*/}
-            {/*chatBoxScrollHeigth: {chatBoxScrollHeigth} | isFetching :{" "}*/}
+            {newMessagesAlert && <NewMessageToast chatBoxRef={chatBoxRef}/>}
+            {/*realtime channel status: {status} | {data?.pages.length} pages*/}
+            {/*loaded | hasNextPage: {hasNextPage?.toString()} |*/}
+            {/*isInitialLoading:{" "}*/}
+            {/*chatBoxScrollHeight: {chatBoxScrollHeight} | isFetching :{" "}*/}
             {/*{isFetching.toString()} | newMessagesAlert:{" "}*/}
             {/*{newMessagesAlert.toString()} | isLastMessagesVisible:{" "}*/}
             {/*{isLastMessageVisible.toString()}*/}
-            {/*<p>{newMessagesAlert && !isLastMessageVisible && "New messages"}</p>*/}
-            <ChatInput />
+            <ChatInput/>
         </div>
     );
 }

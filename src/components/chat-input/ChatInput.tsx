@@ -9,9 +9,9 @@ export function ChatInput() {
                 placeholder="Enter your message here"
                 {...register("text")}
                 type="text"
-                className="input input-sm w-full max-w-none"
+                className="input w-full max-w-none"
             />
-            <button className="btn-primary btn-sm btn" type="submit">
+            <button className="btn-primary btn" type="submit">
                 Send
             </button>
         </form>

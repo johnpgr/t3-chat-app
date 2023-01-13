@@ -1,5 +1,5 @@
 import { CurrentRoomAtom } from "~/atoms/CurrentRoom";
-import type { Message } from "~/components/app/ChatRoomView";
+import type {Message, MessagePayload} from "~/components/app/ChatRoomView";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import { useAtom } from "jotai";
@@ -37,7 +37,8 @@ export function useChatInput() {
                 image: currUserData.user.image,
             },
             createdAt: new Date(),
-        } satisfies Message;
+            read: false,
+        } satisfies MessagePayload["payload"];
 
         void currentChannel.send({
             type: REALTIME_LISTEN_TYPES.BROADCAST,

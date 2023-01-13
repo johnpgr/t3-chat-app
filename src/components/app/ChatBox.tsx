@@ -1,14 +1,14 @@
-import type { Message } from "~/components/app/ChatRoomView";
+import type {Message, MessagePayload} from "~/components/app/ChatRoomView";
 import Image from "next/image";
 import { format, isToday } from "date-fns";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 
-export function ChatBox({ messages }: { messages: Array<Message> }) {
+export function ChatBox({ messages }: { messages: Array<MessagePayload["payload"]> | Array<Message> }) {
     const { data: session } = useSession();
     return (
         <ul>
-            {messages.map((message) => (
+            {messages.map((message) => message && (
                 <li
                     key={message.id}
                     className={classNames("chat", {
