@@ -5,10 +5,10 @@ import { useForm } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
 import { api, type RouterOutputs } from "~/utils/api";
 import {
-    CurrentRoomAtom,
     CurrentViewAtom,
     View,
 } from "~/atoms/CurrentView";
+import {CurrentRoomAtom} from "~/atoms/CurrentRoom"
 import { Loading } from "../Loading";
 
 type Props = {

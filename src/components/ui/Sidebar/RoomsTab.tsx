@@ -3,13 +3,12 @@ import { useAtom } from "jotai";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
+import { CurrentViewAtom, View } from "~/atoms/CurrentView";
+import { CurrentRoomAtom } from "~/atoms/CurrentRoom";
 import {
-    CurrentRoomAtom,
-    CurrentSidebarViewAtom,
-    CurrentViewAtom,
     SidebarView,
-    View,
-} from "~/atoms/CurrentView";
+    CurrentSidebarViewAtom,
+} from "~/atoms/CurrentSidebarView";
 import { api } from "~/utils/api";
 import { Loading } from "../Loading";
 import { RoomEnterModal } from "./RoomEnterModal";

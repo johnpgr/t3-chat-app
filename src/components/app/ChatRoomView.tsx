@@ -8,7 +8,7 @@ import { ChatInput } from "../chat-input/ChatInput";
 import { ChatBox } from "./ChatBox";
 import { Loading } from "../ui/Loading";
 import { CurrentChannelAtom } from "~/atoms/CurrentChannel";
-import { CurrentRoomAtom } from "~/atoms/CurrentView";
+import { CurrentRoomAtom } from "~/atoms/CurrentRoom";
 import { InTransitMessagesAtom } from "~/atoms/InTransitMessages";
 
 export type Message = RouterOutputs["messages"]["list"][number];

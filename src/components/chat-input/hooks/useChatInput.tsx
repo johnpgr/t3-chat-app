@@ -1,4 +1,4 @@
-import { CurrentRoomAtom } from "~/atoms/CurrentView";
+import { CurrentRoomAtom } from "~/atoms/CurrentRoom";
 import type { Message } from "~/components/app/ChatRoomView";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
