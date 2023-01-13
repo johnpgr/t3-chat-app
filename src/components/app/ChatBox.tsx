@@ -9,7 +9,7 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
     return (
         <ul>
             {messages.map((message) => (
-                <div
+                <li
                     key={message.id}
                     className={classNames("chat", {
                         "chat-end": message.user.id === session?.user?.id,
@@ -34,7 +34,7 @@ export function ChatBox({ messages }: { messages: Array<Message> }) {
                         </time>
                     </div>
                     <div className="chat-bubble">{message.text}</div>
-                </div>
+                </li>
             ))}
         </ul>
     );
