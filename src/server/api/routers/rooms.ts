@@ -32,7 +32,7 @@ export const roomsRouter = createTRPCRouter({
     listOwned: protectedProcedure.query(async ({ ctx }) => {
         const userId = ctx.session.user.id;
 
-        return await ctx.prisma.room.findMany({
+        const rooms = await ctx.prisma.room.findMany({
             select: {
                 id: true,
                 name: true,
@@ -42,6 +42,7 @@ export const roomsRouter = createTRPCRouter({
                         RoomUser: true,
                     },
                 },
+                password: true,
             },
             where: {
                 RoomUser: {
@@ -54,6 +55,12 @@ export const roomsRouter = createTRPCRouter({
                 createdAt: "desc",
             },
         });
+
+        return rooms.map((room) =>
+            room.password
+                ? { ...room, password: true }
+                : { ...room, password: false }
+        );
     }),
 
     create: protectedProcedure

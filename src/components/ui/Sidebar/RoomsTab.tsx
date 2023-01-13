@@ -61,6 +61,7 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
                     menuItems.map((room) => (
                         <li key={room.id}>
                             <button onClick={() => handleEnterOwnRoom(room.id)}>
+                                {room.password && <FaLock className="h-3" />}
                                 {room.name}
                                 <div className="ml-auto flex items-center gap-1 text-xs opacity-50">
                                     {room._count.RoomUser} / {room.maxUsers}
@@ -79,9 +80,7 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
                         {allRooms &&
                             allRooms.map((room) =>
                                 room.RoomUser.some(
-                                    (user) =>
-                                        user.userId === session?.user?.id &&
-                                        user.owner
+                                    (user) => user.userId === session?.user?.id
                                 ) ? (
                                     <li key={room.id}>
                                         <button
@@ -89,6 +88,9 @@ export function RoomsTab({ menuItems }: { menuItems: Array<MenuItem> }) {
                                                 handleEnterOwnRoom(room.id)
                                             }
                                         >
+                                            {room.password && (
+                                                <FaLock className="h-3" />
+                                            )}
                                             {room.name}
                                             <div className="ml-auto flex items-center gap-1 text-xs opacity-50">
                                                 {room.RoomUser.length} /{" "}
