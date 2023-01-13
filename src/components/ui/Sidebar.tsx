@@ -1,19 +1,25 @@
-import {RoomsTab} from "./RoomsTab";
-import type {RouterOutputs} from "~/utils/api"
-import {TOPBAR_HEIGHT} from "./Topbar";
-import {Loading} from "./Loading";
+import { RoomsTab } from "./RoomsTab";
+import type { RouterOutputs } from "~/utils/api";
+import { TOPBAR_HEIGHT } from "./Topbar";
+import { Loading } from "./Loading";
 
-export type MenuItem = RouterOutputs["rooms"]["listOwned"][number]
+export type MenuItem = RouterOutputs["rooms"]["listOwned"][number];
 
-export function Sidebar({children, menuItems}
-                            : { children: React.ReactNode, menuItems?: Array<MenuItem> }) {
+export function Sidebar({
+    children,
+    menuItems,
+}: {
+    children: React.ReactNode;
+    menuItems?: Array<MenuItem>;
+}) {
     return (
-        <div className="drawer-mobile drawer"
-             style={{height: `calc(100vh - ${TOPBAR_HEIGHT})`}}>
+        <div
+            className="drawer"
+            style={{ height: `calc(100vh - ${TOPBAR_HEIGHT})` }}
+        >
             <input
-                readOnly
-                checked
-                id="my-drawer-2"
+                defaultChecked
+                id="sidebar-drawer"
                 type="checkbox"
                 className="drawer-toggle"
             />
@@ -21,10 +27,10 @@ export function Sidebar({children, menuItems}
                 {children}
             </div>
             <div className="drawer-side w-80 border-r border-neutral/50">
-                <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-                <div className="h-full bg-base-100 flex flex-col items-center">
-                    {menuItems && <RoomsTab menuItems={menuItems}/>}
-                    {!menuItems && <Loading/>}
+                <label htmlFor="sidebar-drawer" className="drawer-overlay"></label>
+                <div className="flex h-full flex-col items-center bg-base-100">
+                    {menuItems && <RoomsTab menuItems={menuItems} />}
+                    {!menuItems && <Loading />}
                 </div>
             </div>
         </div>

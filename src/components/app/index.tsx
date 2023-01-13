@@ -13,10 +13,6 @@ export function App() {
         <>
             <Topbar/>
             <Sidebar menuItems={roomsQuery.data}>
-                <div className="flex w-full mt-2 justify-center items-center">
-                    Current view:{" "}
-                    {currentView.view}
-                </div>
                 {"roomId" in currentView && <ChatRoomView/>}
             </Sidebar>
         </>
