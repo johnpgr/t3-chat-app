@@ -1,6 +1,6 @@
 import {REALTIME_LISTEN_TYPES} from "@supabase/supabase-js";
 import {useAtom} from "jotai";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {supabase} from "~/services/supabase";
 import type {Payload} from "~/types/realtime";
 import {api, type RouterOutputs} from "~/utils/api";
@@ -27,6 +27,7 @@ export function ChatRoomView() {
         useAtom(InTransitMessagesAtom);
     const [status, setStatus] = useState("");
     const [, setCurrentChannel] = useAtom(CurrentChannelAtom);
+    const chatBoxRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (!roomId) return;
@@ -56,9 +57,17 @@ export function ChatRoomView() {
         }
     }, [roomId]);
 
+    useEffect(()=>{
+        if(!chatBoxRef.current) return;
+        chatBoxRef.current.scrollTo({
+            top: chatBoxRef.current.scrollHeight,
+        });
+    },[isPersistedMessagesLoading, roomId])
+
     return (
         <div className="flex h-full flex-col">
             <div
+                ref={chatBoxRef}
                 className="p-4 h-full overflow-y-scroll scrollbar-thin scrollbar-track-rounded-md scrollbar-thumb-rounded-md scrollbar-track-base-100 scrollbar-thumb-neutral">
                 {isPersistedMessagesLoading && (
                     <div className="flex h-full justify-center items-center">

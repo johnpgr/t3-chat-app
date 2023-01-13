@@ -29,8 +29,9 @@ export function Sidebar({
                 className="drawer-toggle"
             />
             <div className="drawer-content bg-base-300 overflow-hidden">
-                <div className={classNames("h-full transition-all overflow-hidden",{
-                    "translate-x-80 w-[83vw]": isOpen
+                <div className={classNames("h-full transition-all duration-300 overflow-hidden",{
+                    "translate-x-80 w-[83vw]": isOpen,
+                    "translate-x-0 w-screen": !isOpen
                 })}>
                     {children}
                 </div>
