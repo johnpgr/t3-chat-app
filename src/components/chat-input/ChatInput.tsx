@@ -1,17 +1,17 @@
-import {useChatInput} from "./useChatInput";
+import { useChatInput } from "./hooks/useChatInput";
 
 export function ChatInput() {
-    const {register, handleSubmit, onSubmit} = useChatInput();
+    const { register, handleSubmit, onSubmit } = useChatInput();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="p-4 flex gap-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 p-4">
             <input
                 placeholder="Enter your message here"
                 {...register("text")}
                 type="text"
                 className="input input-sm w-full max-w-none"
             />
-            <button className="btn btn-sm btn-primary" type="submit">
+            <button className="btn-primary btn-sm btn" type="submit">
                 Send
             </button>
         </form>

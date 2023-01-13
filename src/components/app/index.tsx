@@ -1,9 +1,9 @@
-import {api} from "~/utils/api";
-import {useAtom} from "jotai";
-import {Sidebar} from "../ui/Sidebar";
-import {CurrentViewAtom} from "./atoms/CurrentView";
-import {Topbar} from "../ui/Topbar";
-import {ChatRoomView} from "./ChatRoomView";
+import { api } from "~/utils/api";
+import { useAtom } from "jotai";
+import { Index } from "../ui/Sidebar";
+import { CurrentViewAtom } from "../../atoms/CurrentView";
+import { Topbar } from "../ui/Topbar";
+import { ChatRoomView } from "./ChatRoomView";
 
 export function App() {
     const roomsQuery = api.rooms.listOwned.useQuery();
@@ -11,10 +11,10 @@ export function App() {
 
     return (
         <>
-            <Topbar/>
-            <Sidebar menuItems={roomsQuery.data}>
-                {"roomId" in currentView && <ChatRoomView/>}
-            </Sidebar>
+            <Topbar />
+            <Index menuItems={roomsQuery.data}>
+                {"roomId" in currentView && <ChatRoomView />}
+            </Index>
         </>
     );
 }
