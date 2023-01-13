@@ -57,7 +57,7 @@ export function ChatRoomView() {
     }, [roomId]);
 
     return (
-        <div className="flex h-[96%] flex-col w-full">
+        <div className="flex h-full flex-col">
             <div
                 className="p-4 h-full overflow-y-scroll scrollbar-thin scrollbar-track-rounded-md scrollbar-thumb-rounded-md scrollbar-track-base-100 scrollbar-thumb-neutral">
                 {isPersistedMessagesLoading && (
