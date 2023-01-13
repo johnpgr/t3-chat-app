@@ -156,14 +156,14 @@ export function ChatRoomView() {
                 {inTransitMessages && <ChatBox messages={inTransitMessages} />}
                 <div ref={lastMsgRef} />
             </div>
-            {data?.pages.length} pages loaded | hasNextPage:{" "}
-            {hasNextPage?.toString()} | isInitialLoading:{" "}
-            {isInitialLoading.toString()} | isSuccess: {isSuccess.toString()} |
-            chatBoxScrollHeigth: {chatBoxScrollHeigth} | isFetching :{" "}
-            {isFetching.toString()} | newMessagesAlert:{" "}
-            {newMessagesAlert.toString()} | isLastMessagesVisible:{" "}
-            {isLastMessageVisible.toString()}
-            <p>{newMessagesAlert && !isLastMessageVisible && "New messages"}</p>
+            {/*{data?.pages.length} pages loaded | hasNextPage:{" "}*/}
+            {/*{hasNextPage?.toString()} | isInitialLoading:{" "}*/}
+            {/*{isInitialLoading.toString()} | isSuccess: {isSuccess.toString()} |*/}
+            {/*chatBoxScrollHeigth: {chatBoxScrollHeigth} | isFetching :{" "}*/}
+            {/*{isFetching.toString()} | newMessagesAlert:{" "}*/}
+            {/*{newMessagesAlert.toString()} | isLastMessagesVisible:{" "}*/}
+            {/*{isLastMessageVisible.toString()}*/}
+            {/*<p>{newMessagesAlert && !isLastMessageVisible && "New messages"}</p>*/}
             <ChatInput />
         </div>
     );
