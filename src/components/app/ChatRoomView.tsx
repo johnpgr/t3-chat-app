@@ -14,7 +14,6 @@ import classNames from "classnames";
 import {useSession} from "next-auth/react";
 import {NewMessageToast} from "~/components/ui/NewMessageToast";
 
-// export type Message = RouterOutputs["messages"]["list"]["messages"][number];
 export type Message =
     RouterOutputs["messages"]["listInfinite"]["messages"][number];
 
@@ -23,6 +22,7 @@ export type MessagePayload = Payload<Message & { read: boolean }>;
 export function ChatRoomView() {
     const [roomId] = useAtom(CurrentRoomAtom);
     const [isLoadMoreVisible, ref] = useIsIntersecting<HTMLDivElement>();
+    const ctx = api.useContext();
     const {data, isFetching, isInitialLoading, hasNextPage, fetchNextPage} =
         api.messages.listInfinite.useInfiniteQuery(
             {roomId: roomId!},
@@ -66,7 +66,8 @@ export function ChatRoomView() {
                             payload.payload.createdAt
                         );
                     }
-                    setInTransitMessages((prev) => [...prev, payload.payload!]);
+                    setInTransitMessages((prev) =>
+                        [...prev, payload.payload!]);
                 }
             )
             .subscribe((status) => {
@@ -80,6 +81,7 @@ export function ChatRoomView() {
             setInTransitMessages([]);
             setChatBoxScrollHeight(0);
             setCurrentChannel(null);
+            void ctx.messages.listInfinite.invalidate({roomId});
         };
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [roomId]);
