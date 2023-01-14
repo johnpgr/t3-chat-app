@@ -16,7 +16,7 @@
 - [x] User can create rooms with passwords
 - [x] User have a list of rooms they are in / owns
 - [x] List all active rooms
-- [ ] User can join rooms
+- [x] User can join rooms
 - [x] Live chat using websockets
 - [x] Live messages are both broadcasted & instantly displayed and persisted on
   db
