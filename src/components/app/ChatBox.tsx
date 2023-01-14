@@ -1,11 +1,11 @@
 import type {Message, MessagePayload} from "~/components/app/ChatRoomView";
 import Image from "next/image";
-import { format, isToday } from "date-fns";
+import {format, isThisWeek, isToday} from "date-fns";
 import classNames from "classnames";
-import { useSession } from "next-auth/react";
+import {useSession} from "next-auth/react";
 
-export function ChatBox({ messages }: { messages: Array<MessagePayload["payload"]> | Array<Message> }) {
-    const { data: session } = useSession();
+export function ChatBox({messages}: { messages: Array<MessagePayload["payload"]> | Array<Message> }) {
+    const {data: session} = useSession();
     return (
         <ul>
             {messages.map((message) => message && (
@@ -26,11 +26,12 @@ export function ChatBox({ messages }: { messages: Array<MessagePayload["payload"
                     <div className="chat-header">
                         {message.user.name}{" "}
                         <time className="text-xs opacity-50">
-                            {isToday(message.createdAt) ? (
-                                <>Today {format(message.createdAt, "HH:mm")}</>
-                            ) : (
-                                format(message.createdAt, "dd/MM/yyyy HH:mm")
-                            )}
+                            {isThisWeek(message.createdAt)
+                                ? isToday(message.createdAt)
+                                    ? <>Today {" "}{format(message.createdAt, "HH:mm")}</>
+                                    : format(message.createdAt, "EEEE HH:mm")
+                                : format(message.createdAt, "dd/MM/yyyy HH:mm")
+                            }
                         </time>
                     </div>
                     <div className="chat-bubble">{message.text}</div>
